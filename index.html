@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake P2W RPG</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  
-</body>
 
+    <div id="interface">
+        <h2>⚔️ Stage <span id="txt-stage">1</span></h2>
+        <p>💰 Gold: <span id="txt-gold">0</span></p>
+        <p>❤️ HP: <span id="txt-hp">100</span> / <span id="txt-hp-max">100</span></p>
+        <p>💪 Attack: <span id="txt-attack">10</span></p>
+    </div>
+    
+    <hr>
+    <div id="enemy-interface" style="color: #a00;">
+        <h3>👹 Current Enemy HP: <span id="txt-enemy-hp">--</span></h3>
+    </div>
+    <hr>
+
+    <div id="log" style="height: 120px; overflow-y: auto; background: #eee; padding: 10px; font-family: monospace;">
+        <p>Game starting...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
