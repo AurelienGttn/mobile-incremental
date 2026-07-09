@@ -5,16 +5,16 @@ let hero = {
     hp: 100,
     hpMax: 100,
     attack: 10,
-    hpRegen: 5, // HP recovered per second out of combat
+    hpRegen: 5, // HP recovered per tick out of combat (1 tick = gameSpeed ms)
     gold: 0,
     stage: 1
 };
 
 let currentEnemy = null; 
 let searchTimer = 0;       // Decrements down to 0 to spawn an enemy
-let searchCooldown = 3;    // Base search time in seconds (mutable for future shop)
+let searchCooldown = 3;    // Base search time in ticks (mutable for future shop)
 
-let gameSpeed = 1000;      // 1 tick = 1000ms (1 second)
+let gameSpeed = 1000;      // Tick duration in ms; 1 tick = 1000ms (1 second)
 let gameLoop;
 
 // ==========================================
@@ -70,7 +70,7 @@ function spawnNewEnemy() {
 }
 
 function executeTick() {
-    // 1. PHASE DE COMBAT ACTIF
+    // 1. ACTIVE COMBAT PHASE
     if (currentEnemy && currentEnemy.hp > 0) {
         currentEnemy.hp -= hero.attack;
         addLogMessage(`⚔️ You hit the enemy for ${hero.attack} dmg.`);
@@ -81,7 +81,7 @@ function executeTick() {
             addLogMessage(`🎉 Enemy Defeated! Stage ${hero.stage} Cleared! +${goldEarned} Gold.`);
             hero.stage++;
             currentEnemy = null; 
-            searchTimer = searchCooldown; // Vaut 3
+            searchTimer = searchCooldown;
         } else {
             hero.hp -= currentEnemy.attack;
             addLogMessage(`💥 Enemy strikes back for ${currentEnemy.attack} dmg.`);
@@ -98,27 +98,28 @@ function executeTick() {
         return; 
     }
 
-    // 2. PHASE DE SOIN HORS-COMBAT
+    // 2. OUT-OF-COMBAT HEALING PHASE
     if (hero.hp < hero.hpMax) {
         hero.hp = Math.min(hero.hpMax, hero.hp + hero.hpRegen);
         refreshInterface(); 
         return; 
     }
 
-    // 3. PHASE DE RECHERCHE HORS-COMBAT (Ordre corrigé pour éviter le doublon)
+    // 3. OUT-OF-COMBAT ENEMY SEARCH PHASE
     if (searchTimer > 0) {
-        searchTimer--; // On baisse le timer IMMÉDIATEMENT (passe de 3 à 2, etc.)
+        searchTimer--;
         
         if (searchTimer > 0) {
-            addLogMessage(`🔍 Searching for the next target...`); 
-            refreshInterface(); // Affichera 2s, puis 1s
+            // Log only once at the start of the search to avoid spamming the log
+             if (searchTimer === searchCooldown - 1) {
+                 addLogMessage(`🔍 Searching for the next target...`);
+             }
+            refreshInterface();
             return; 
         }
-        // Si le timer est tombé à 0 après la baisse, on ne fait pas de return 
-        // et on laisse le code couler directement vers le spawn du monstre !
     }
 
-    // 4. SPAWN IMMÉDIAT DU MONSTRE
+    // 4. IMMEDIATE MONSTER SPAWN
     if (!currentEnemy) {
         spawnNewEnemy();
         addLogMessage(`⚠️ A wild enemy appears for Stage ${hero.stage}!`);
@@ -152,4 +153,5 @@ function devGiveGold(amount) {
 }
 
 // Kickstart the game engine loop
+refreshInterface();
 gameLoop = setInterval(executeTick, gameSpeed);
