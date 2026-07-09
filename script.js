@@ -49,8 +49,13 @@ function refreshInterface() {
 
 function addLogMessage(text) {
     const log = document.getElementById("log");
-    // Insert new message at the top for comfortable mobile view
-    log.innerHTML = `<p>${text}</p>` + log.innerHTML;
+    const p = document.createElement("p");
+    p.textContent = text;
+    log.prepend(p);
+    // Prevent unbounded growth over long idle sessions
+    while (log.children.length > 100) {
+        log.removeChild(log.lastElementChild);
+    }
 }
 
 // ==========================================
@@ -89,7 +94,7 @@ function executeTick() {
                 searchTimer = 0; 
             }
         }
-        refreshInterface(); // Affiche immédiatement "Searching (3s)" au moment de la mort
+        refreshInterface();
         return; 
     }
 
@@ -125,21 +130,24 @@ function executeTick() {
 // 4. DEV TOOLS (Functions for fast testing)
 // ==========================================
 function devSkipToStage(targetStage) {
-    hero.stage = targetStage;
-    currentEnemy = null; 
-    searchTimer = 0;     
-    addLogMessage(`[DEV] Teleported to Stage ${targetStage}`);
+    const stage = Math.max(1, Math.floor(Number(targetStage) || 1));
+    hero.stage = stage;
+    currentEnemy = null;
+    searchTimer = 0;
+    addLogMessage(`[DEV] Teleported to Stage ${stage}`);
     refreshInterface();
 }
 
 function devKillHero() {
     hero.hp = 0;
     addLogMessage(`[DEV] Smites the hero out of existence.`);
+    refreshInterface();
 }
 
 function devGiveGold(amount) {
-    hero.gold += amount;
-    addLogMessage(`[DEV] Added +${amount} Gold.`);
+    const delta = Number(amount) || 0;
+    hero.gold += delta;
+    addLogMessage(`[DEV] Added +${delta} Gold.`);
     refreshInterface();
 }
 
