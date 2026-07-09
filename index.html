@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake P2W RPG</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  
-</body>
 
+    <!-- Player Dashboard -->
+    <div id="interface">
+        <h2>⚔️ Stage <span id="txt-stage">1</span></h2>
+        <p>💰 Gold: <span id="txt-gold">0</span></p>
+        <p>❤️ HP: <span id="txt-hp">100</span> / <span id="txt-hp-max">100</span></p>
+        <p>💪 Attack: <span id="txt-attack">10</span></p>
+    </div>
+
+    <hr>
+    <!-- Dynamic State Dashboard -->
+    <div id="enemy-interface" style="color: #a00; min-height: 50px;">
+        <p style="font-size: 1.2rem; font-weight: bold;" id="txt-enemy-hp">--</p>
+    </div>
+    <hr>
+
+    <!-- Combat Log -->
+    <div id="log" style="height: 120px; overflow-y: auto; background: #eee; padding: 10px; font-family: monospace;">
+        <p>Game starting...</p>
+    </div>
+
+    <hr>
+    <!-- 🛠️ DEV TOOLS PANEL (Discrete for testing) -->
+    <div id="dev-tools" style="background: #fff3cd; padding: 10px; border: 1px solid #ffeeba; margin-top: 15px;">
+        <p style="margin: 0 0 5px 0; font-size: 0.8rem; color: #856404; font-weight: bold;">🛠️ Dev Panel:</p>
+        <button onclick="devSkipToStage(10)">Skip to Stage 10</button>
+        <button onclick="devSkipToStage(50)">Skip to Stage 50</button>
+        <button onclick="devKillHero()">Insta-Kill Hero</button>
+        <button onclick="devGiveGold(1000)">+1000 Gold</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
