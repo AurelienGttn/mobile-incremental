@@ -128,31 +128,6 @@ function executeTick() {
     }
 }
 
-// ==========================================
-// 4. DEV TOOLS (Functions for fast testing)
-// ==========================================
-function devSkipToStage(targetStage) {
-    const stage = Math.max(1, Math.floor(Number(targetStage) || 1));
-    hero.stage = stage;
-    currentEnemy = null;
-    searchTimer = 0;
-    addLogMessage(`[DEV] Teleported to Stage ${stage}`);
-    refreshInterface();
-}
-
-function devKillHero() {
-    hero.hp = 0;
-    addLogMessage(`[DEV] Smites the hero out of existence.`);
-    refreshInterface();
-}
-
-function devGiveGold(amount) {
-    const delta = Number(amount) || 0;
-    hero.gold += delta;
-    addLogMessage(`[DEV] Added +${delta} Gold.`);
-    refreshInterface();
-}
-
 // Kickstart the game engine loop
 refreshInterface();
 gameLoop = setInterval(executeTick, gameSpeed);
