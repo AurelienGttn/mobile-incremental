@@ -35,8 +35,9 @@ function refreshInterface() {
         enemyHpDisplay.innerText = `${icon} HP: ${currentEnemy.hp} / ${currentEnemy.hpMax}`;
     } 
     else if (hero.hp < hero.hpMax) {
-        let missingHp = hero.hpMax - hero.hp;
-        let secondsLeft = Math.ceil(missingHp / hero.hpRegen);
+        const missingHp = hero.hpMax - hero.hp;
+        const ticksLeft = Math.ceil(missingHp / hero.hpRegen);
+        const secondsLeft = Math.ceil((ticksLeft * gameSpeed) / 1000);
         enemyHpDisplay.innerText = `❤️ Healing... (${secondsLeft}s left)`;
     } 
     else if (searchTimer > 0) {
@@ -111,9 +112,9 @@ function executeTick() {
         
         if (searchTimer > 0) {
             // Log only once at the start of the search to avoid spamming the log
-             if (searchTimer === searchCooldown - 1) {
+            if (searchTimer === searchCooldown - 1) {
                  addLogMessage(`🔍 Searching for the next target...`);
-             }
+            }
             refreshInterface();
             return; 
         }
