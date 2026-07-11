@@ -25,8 +25,6 @@ export function refreshInterface() {
         enemyHpDisplay.innerText = `❤️ Healing... (${secondsLeft}s left)`;
     } 
     else if (searchTimer > 0) {
-        // High-precision countdown display (e.g., 2.7s, 2.6s...)
-        let seconds = (searchTimer / 1000).toFixed(1);
         enemyHpDisplay.innerText = `🔍 Searching...`;
     } else {
         enemyHpDisplay.innerText = "⏳ Ready";

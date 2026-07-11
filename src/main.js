@@ -103,5 +103,6 @@ function executeTick() {
     }
 }
 
+refreshInterface();
 // Kickstart high-frequency engine loop
 setInterval(executeTick, tickRate);
